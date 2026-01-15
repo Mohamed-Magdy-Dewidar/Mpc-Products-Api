@@ -1,0 +1,21 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")  // <--- This line works perfectly in Prisma 5
+}
+
+model Product {
+  id        String   @id @default(uuid())
+  name      String
+  price     Float
+  category  String
+  imageUrl  String
+  inStock   Boolean
+  variants  String[]
+  createdAt DateTime @default(now())
+}
