@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: mpc_api
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DATABASE_URL=postgresql://mpc_user:mpc_pass@db:5432/mpc_db
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    container_name: mpc-postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: mpc_user
+      POSTGRES_PASSWORD: mpc_pass
+      POSTGRES_DB: mpc_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+# Persist database data so it survives restarts
+volumes:
+  pgdata:
